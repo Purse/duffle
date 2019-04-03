@@ -4,6 +4,7 @@
 
 const program = require('commander');
 const parseCSV = require('../lib/parseCSV');
+const strCSV = require('../lib/strCSV');
 const apiRequest = require('../lib/api');
 
 const initApi = (jwt) => {
@@ -12,7 +13,9 @@ const initApi = (jwt) => {
 
 program
   .version('0.0.1')
-  .option('-a, --auth-token <jwt>', 'Your Purse JWT Auth Token');
+  .option('-a, --auth-token <jwt>', 'Your Purse JWT Auth Token')
+  .option('-oj, --out-json <path>', 'A file name prefix to output json results to')
+  .option('-oc, --out-csv <path>', 'A file name prefix to output csv results to')
   
 program
   .command('create-orders <path>')
@@ -29,12 +32,15 @@ program
     }
     let parsedFile;
     try {
-      parsedFile = await parseCSV(path);
+      parsedFile = await strCSV(path);
     } catch (e) {
       console.log(e);
       return;
     }
     const bulkOrders = await Api.createBulkOrders(parsedFile);
+    if (bulkOrders.successfulOrders.length) {
+      await strCSV(successOutPath, bulkOrders.successfulOrders);
+    }
     console.log(`${bulkOrders.successfulOrders.length} successful orders:`);
     console.log(`${JSON.stringify(bulkOrders.successfulOrders)}`);
     console.log(`${bulkOrders.failedOrders.length} failed orders:`);
@@ -70,6 +76,29 @@ program
   
 program
   .command('cancel-orders <path>')
-  .description('Cancels a bulk list of orders from a CSV file');
+  .description('Cancels a bulk list of orders from a CSV file')
+  .action(async (path, options) => {
+    let Api;
+    try {
+      Api = new apiRequest(options.parent.authToken);
+    } catch (e) {
+      console.log('*********************');
+      console.log(e.message);
+      console.log('*********************');
+      return;
+    }
+    let parsedFile;
+    try {
+      parsedFile = await parseCSV(path);
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+    const bulkCancel = await Api.cancelBulkOrders(parsedFile);
+    console.log(`${bulkCancel.successfulOrders.length} successful orders:`);
+    console.log(`${JSON.stringify(bulkCancel.successfulOrders)}`);
+    console.log(`${bulkCancel.failedOrders.length} failed orders:`);
+    console.log(`${JSON.stringify(bulkCancel.failedOrders)}`);
+  });
   
 program.parse(process.argv);
