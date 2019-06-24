@@ -49,3 +49,15 @@ example:
 duffle --auth-token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyasdllkflkasdflaslljfjlJ1c2VyX2lkIjo2NzYsInVzZXJuYW1lIjoiZHlsYW5iYXRodXJzdCIsImV4cCI6MTU1MzE5MzUwMiwiZW1haWwiOiJkeWxhbmJhdGh1cnN0QGdtYWlsLmNvbSIsInNkIjoiZ2Z4M081T0kiLCJyIjo.iNkd4cmFoRWYiLCJkcyI6ImZVM cancel-orders examples/files/cancel.csv
 ```
 Your console output will show the number of successful and unsuccessfully canceled orders, as well as the response text for each order.
+
+## Order Info
+To get a bulk set of order information on Purse, create a `.csv` file and format it exactly like <a href="./examples/files/cancel.csv">this file</a> in the examples directory. Then run:
+
+```
+duffle --auth-token YOUR_PURSE_TOKEN orders-info /PATH/TO/YOUR/CSV/FILE.csv
+```
+example:
+```
+duffle --auth-token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyasdllkflkasdflaslljfjlJ1c2VyX2lkIjo2NzYsInVzZXJuYW1lIjoiZHlsYW5iYXRodXJzdCIsImV4cCI6MTU1MzE5MzUwMiwiZW1haWwiOiJkeWxhbmJhdGh1cnN0QGdtYWlsLmNvbSIsInNkIjoiZ2Z4M081T0kiLCJyIjo.iNkd4cmFoRWYiLCJkcyI6ImZVM orders-info examples/files/orders.csv
+```
+Your console output will show the number of successful and unsuccessful order info requests, as well as the order info for each order.

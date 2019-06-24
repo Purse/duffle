@@ -101,4 +101,31 @@ program
     console.log(`${JSON.stringify(bulkCancel.failedOrders)}`);
   });
   
+program
+  .command('orders-info <path>')
+  .description('Gets a bulk list of order info from a CSV file')
+  .action(async (path, options) => {
+    let Api;
+    try {
+      Api = new apiRequest(options.parent.authToken);
+    } catch (e) {
+      console.log('*********************');
+      console.log(e.message);
+      console.log('*********************');
+      return;
+    }
+    let parsedFile;
+    try {
+      parsedFile = await parseCSV(path);
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+    const bulkInfo = await Api.getBulkInfo(parsedFile);
+    console.log(`${bulkInfo.successfulOrders.length} successful orders:`);
+    console.log(`${JSON.stringify(bulkInfo.successfulOrders)}`);
+    console.log(`${bulkInfo.failedOrders.length} failed orders:`);
+    console.log(`${JSON.stringify(bulkInfo.failedOrders)}`);
+  });
+  
 program.parse(process.argv);
