@@ -32,15 +32,12 @@ program
     }
     let parsedFile;
     try {
-      parsedFile = await strCSV(path);
+      parsedFile = await parseCSV(path);
     } catch (e) {
       console.log(e);
       return;
     }
     const bulkOrders = await Api.createBulkOrders(parsedFile);
-    if (bulkOrders.successfulOrders.length) {
-      await strCSV(successOutPath, bulkOrders.successfulOrders);
-    }
     console.log(`${bulkOrders.successfulOrders.length} successful orders:`);
     console.log(`${JSON.stringify(bulkOrders.successfulOrders)}`);
     console.log(`${bulkOrders.failedOrders.length} failed orders:`);
