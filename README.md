@@ -61,3 +61,21 @@ example:
 duffle --auth-token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyasdllkflkasdflaslljfjlJ1c2VyX2lkIjo2NzYsInVzZXJuYW1lIjoiZHlsYW5iYXRodXJzdCIsImV4cCI6MTU1MzE5MzUwMiwiZW1haWwiOiJkeWxhbmJhdGh1cnN0QGdtYWlsLmNvbSIsInNkIjoiZ2Z4M081T0kiLCJyIjo.iNkd4cmFoRWYiLCJkcyI6ImZVM orders-info examples/files/orders.csv
 ```
 Your console output will show the number of successful and unsuccessful order info requests, as well as the order info for each order.
+
+
+## Open Orders
+To get a bulk set of open orders on Purse, run:
+
+```
+duffle --auth-token YOUR_PURSE_TOKEN open-orders
+```
+example:
+```
+duffle --auth-token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyasdllkflkasdflaslljfjlJ1c2VyX2lkIjo2NzYsInVzZXJuYW1lIjoiZHlsYW5iYXRodXJzdCIsImV4cCI6MTU1MzE5MzUwMiwiZW1haWwiOiJkeWxhbmJhdGh1cnN0QGdtYWlsLmNvbSIsInNkIjoiZ2Z4M081T0kiLCJyIjo.iNkd4cmFoRWYiLCJkcyI6ImZVM orders-info examples/files/orders.csv
+```
+with options:
+```
+duffle --auth-token YOUR_PURSE_TOKEN --limit 100 --offset 0 open-orders
+```
+run `duffle open-orders -h` for more options
+Your console output will show the number of successful open orders, as well as the order info for each order.

@@ -125,4 +125,31 @@ program
     console.log(`${JSON.stringify(bulkInfo.failedOrders)}`);
   });
   
+program
+  .command('open-orders')
+  .description('Gets a bulk list of open orders')
+  .option('-l, --limit [limit]', 'The number of orders to request', 100)
+  .option('-o, --offset [offset]', 'The number of orders to offset by', 0)
+  .option('-i, --inactive [inactive]', 'The active or inactive state', false)
+  .option('-s, --sort [sort]', 'The field to sort the list by', 'created')
+  .option('-S, --search [search]', 'Search applied to order query', false)
+  .action(async (options) => {
+    let Api;
+    try {
+      Api = new apiRequest(options.parent.authToken);
+    } catch (e) {
+      console.log('*********************');
+      console.log(e.message);
+      console.log('*********************');
+      return;
+    }
+    const { limit, offset, inactive, sort, search } = options;
+    Api.openOrderQS = { limit, offset, inactive, sort, search };
+    const openOrders = await Api.getBulkOpenOrders();
+    console.log(`${openOrders.successfulOrders.length} successful orders:`);
+    console.log(`${JSON.stringify(openOrders.successfulOrders)}`);
+    console.log(`${openOrders.failedOrders.length} failed orders:`);
+    console.log(`${JSON.stringify(openOrders.failedOrders)}`);
+  });
+
 program.parse(process.argv);
